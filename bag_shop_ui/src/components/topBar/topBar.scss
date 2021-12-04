@@ -1,0 +1,17 @@
+.top-bar {
+  position: fixed;
+  display: flex;
+  background-color: #1A01CC;
+  width: 100%;
+  height: 80px;
+  color: #2aabd2;
+  justify-content: space-around;
+  .top-btn {
+    margin: auto;
+    font-size: 30px;
+    font-weight: bold;
+  }:hover {
+    color: #2b542c;
+    transform: scale(1.05);
+     }
+}
