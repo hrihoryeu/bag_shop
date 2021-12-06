@@ -37,12 +37,10 @@ export default class CatalogueItem extends Component {
         this.setState({
             item
         })
-        console.log(`item: ${this.state.item}`)
     }
 
     render() {
         const { item } = this.state;
-        console.log(item)
 
         return (
             <div className="catalogue__item">

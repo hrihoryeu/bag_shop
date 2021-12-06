@@ -5,7 +5,7 @@ import BagService from "../../services/BagService";
 
 export default class FilterBar extends Component {
     state = {
-        brandToggle: false,
+        toggle: false,
         brandList: [],
         filtersList: [],
 
@@ -16,15 +16,27 @@ export default class FilterBar extends Component {
             'material',
             'form',
             'size'
-        ]
+        ],
+
+        toggleList: {
+            'all': false,
+            'manufacturer': false,
+            'color': false,
+            'material': false,
+            'form': false,
+            'size': false,
+        }
     }
 
     bagService = new BagService();
 
     componentDidMount() {
-        this.bagService
-            .getManufacturers()
-            .then(this.onBrandListLoaded)
+        const {filterList} = this.state
+        filterList.map((name) => {
+            this.bagService
+                .getAlllItems(name)
+                .then(this.onFilterLoaded)
+        });
     }
 
     onBrandListLoaded = (brandList) => {
@@ -33,17 +45,19 @@ export default class FilterBar extends Component {
         })
     }
 
-    onFilterLoaded = (filtersList) => {
-        this.setState({
-            filtersList
+    onFilterLoaded = (newList) => {
+        this.setState(({filtersList}) => {
+            return {
+                filtersList: [...filtersList, newList]
+            }
         })
     }
 
-    renderBrands(arr) {
-        const brandList = arr.map((item) => {
+    renderItem(content, name) {
+        const itemList = content.map((item) => {
             return (
                 <div
-                    className="brand__name"
+                    className={`${name}__name`}
                     key={item.id}
                     onClick={() => this.props.onBrandListLoaded(item.manufacturer_name)}>
                     {item.manufacturer_name}
@@ -53,12 +67,38 @@ export default class FilterBar extends Component {
         return brandList
     }
 
+    onToggle = (item) => {
+        const { toggleList } = this.state;
+        let newToggleList = {
+            'all': false,
+            'manufacturer': false,
+            'color': false,
+            'material': false,
+            'form': false,
+            'size': false,
+        }
+        newToggleList[item['filterName']] = !toggleList[item['filterName']]
+
+        this.setState({
+            toggleList: newToggleList
+        })
+        console.log(toggleList)
+    }
+
     renderFilters(arr) {
-        const filtersList = arr.map((filterName) => {
-            this.bagService
-                .getAlllItems(filterName)
-                .then(this.onFilterLoaded)
+        const filtersList = arr.map((item) => {
+            const { toggleList } = this.state;
+            const clazzName = toggleList[item['filterName']] ? "filter_bar__select__flex" : "filter_bar__select";
+            const content = toggleList[item['filterName']] ? this.renderItem(item['data'], item['filterName']) : item['filterName'];
+            return (
+                <div
+                    className={clazzName}
+                    onClick={() => this.onToggle(item)}>
+                    {content}
+                </div>
+            )
         });
+        return filtersList
     }
 
     onBrandToggle = () => {
@@ -70,29 +110,19 @@ export default class FilterBar extends Component {
     }
 
     render() {
-        const { brandList, brandToggle, filtersList, filterList } = this.state;
+        const { brandList, brandToggle, filtersList, filterList, toggleList } = this.state;
 
-        console.log(filtersList);
-
-        const brandFilter = brandToggle ? this.renderBrands(brandList) : 'BRANDS';
+        const filters = this.renderFilters(filtersList);
         const brandClassName = brandToggle ? "filter_bar__select__flex" : "filter_bar__select"
 
         return (
             <div className='filter_bar'>
                 <div
                     className="filter_bar__head"
-                    onClick={() => this.renderFilters(filterList)}>
+                    onClick={() => console.log(toggleList)} >
                     FILTERS
                 </div>
-                <div
-                    className={brandClassName}
-                    onClick={this.onBrandToggle} >
-                    {brandFilter}
-                </div>
-                <div
-                    className="filter_bar__select" >
-                    COLOR
-                </div>
+                {filters}
             </div>
         );
     }
