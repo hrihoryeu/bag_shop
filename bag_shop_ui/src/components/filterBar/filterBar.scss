@@ -1,0 +1,49 @@
+.filter_bar {
+  position: fixed;
+  top: 120px;
+  left: 10px;
+  &__head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2aabd2;
+    border-radius: 50px;
+    width: 100px;
+    height: 100px;
+  }
+  &__select {
+    margin-top: 30px;
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2aabd2;
+    border-radius: 40px;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    &__flex {
+      margin-top: 30px;
+      margin-left: 10px;
+      padding: 0 20px;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      background-color: #2aabd2;
+      border-radius: 40px;
+      height: 80px;
+    }
+  }
+}
+
+.brand__name {
+  margin: 0 20px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.brand__name:hover {
+  transform: scale(1.1);
+  color: white;
+ }

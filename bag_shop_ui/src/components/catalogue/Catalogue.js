@@ -2,7 +2,6 @@ import {Component} from "react";
 import './catalogue.scss'
 
 import BagService from "../../services/BagService";
-import r from '../../resources/img/product_img/'
 
 
 export default class Catalogue extends Component {
@@ -16,11 +15,18 @@ export default class Catalogue extends Component {
         this.bagService
             .getAllItems()
             .then(this.onItemListLoaded)
-        console.log('mount')
     }
 
-    componentWillUnmount() {
-        console.log('unmount')
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.brandName !== prevProps.brandName) {
+            this.onBrandListLoaded(this.props.brandName);
+        }
+    }
+
+    onBrandListLoaded = (name) => {
+        this.bagService
+            .getManufacturerItems(name)
+            .then(this.onItemListLoaded)
     }
 
     onItemListLoaded = (itemList) => {
@@ -32,23 +38,27 @@ export default class Catalogue extends Component {
     renderItems(arr) {
         const itemList = arr.map((item) => {
             return (
-                <li
-                    className='item'
-                    key={item.id} >
-                    <img src={item.thumbnail} alt={item.name}/>
+                <div
+                    className='item__info'
+                    key={item.id}
+                    onClick={() => this.props.onItemSelected(item.id)}>
+                    <img
+                        src={item.thumbnail}
+                        alt={item.name}
+                        className='item__img' />
                     <div className="item__name">
                         {item.product_name}
                     </div>
                     <div className="item__description">
-                        {item.description}
+                        {item.manufacturer}
                     </div>
-                </li>
+                </div>
             )
         });
         return (
-            <ul className="item__grid">
+            <div className="item__grid">
                 {itemList}
-            </ul>
+            </div>
         )
     }
     render() {
@@ -59,10 +69,6 @@ export default class Catalogue extends Component {
         return (
             <div className="item__list">
                 {items}
-                <button
-                    className='button'>
-                    LOAD MORE
-                </button>
             </div>
         )
     }

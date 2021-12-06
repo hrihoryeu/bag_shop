@@ -1,0 +1,14 @@
+.catalogue__item {
+  position: fixed;
+  top: 120px;
+  right: 125px;
+  padding: 40px 10px;
+  background-color: #2aabd2;
+  border-radius: 50px;
+  width: 430px;
+  height: 603px;
+  &__image {
+    width: 200px;
+    height: 200px;
+  }
+}

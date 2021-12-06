@@ -1,3 +1,29 @@
-.item__list {
-  padding-top: 80px;
+.item {
+  &__list {
+    margin-top: 40px;
+    margin-left: 125px;
+    margin-bottom: 40px;
+    background-color: #2aabd2;
+    border-radius: 40px;
+    width: 700px;
+  }
+  &__grid {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+  }
+  &__info {
+    margin: 20px;
+    background-color: #2b542c;
+    border-radius: 40px;
+    width: 180px;
+    height: 240px;
+    cursor: pointer;
+  }
+  &__img {
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    width: 180px;
+    height: 180px;
+  }
 }
